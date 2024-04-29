@@ -1,10 +1,9 @@
 const PathConstants = {
     HOME: "/",
-    Contacts: "/Contacts",
-    Inbox: "/inbox",
-   // ABOUT: "/about",
-   // Clients:"/Clients",
-    Clients:"/Clients",
+    Contacts: "/src/pages/Contacts",
+    Inbox: "/src/pages/Inbox",
+    Clients:"/src/pages/Clients",
+    TaskManagment:"/src/pages/TaskManagment",
 }
 
-export default PathConstants
+export default PathConstants;
