@@ -1,13 +1,20 @@
 
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import routes from './router';
+import Layout from './components/layout';
+import Page404 from "./pages/Page404";
 
-import './App.css'
 
 function App() {
-  return(
-    <>
-      <p className="bg-blue-500 text-blue-400 top-0 mr-4">hello world</p>
-    </>
-  )
+  const router = createBrowserRouter([
+    {
+      element: <Layout />,
+      errorElement: <Page404 />,
+      children: routes
+    }
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
