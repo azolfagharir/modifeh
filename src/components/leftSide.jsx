@@ -4,15 +4,25 @@ import PathConstants from '/src/router/pathconstants.jsx'
 function LeftSide(){
     return(
         <>
-
-            <img className="absolute w-32 top-14 left-8" src="logo.png" alt="modifeh" />
+        <div className="absolute bg-gray-200 top-10 h-full">
+            <div className="bg-gray-500	">
+               
+            </div>
+              <img className=" w-32 top-28 mt-10 left-8 mx-20" src="/public/logo.png" alt="modifeh" />
 
             <div>
-            <Link className="absolute left-16 top-48" to={PathConstants.Clients}>Clients</Link>
-            <Link className="absolute left-16 top-56" to={PathConstants.Contacts}>Contacts</Link>
-            <Link className="absolute left-16 top-64" to={PathConstants.Inbox}>inbox</Link>
-            <Link className="absolute left-16 top-72 " to={PathConstants.TaskManagment}>TaskManagment</Link>
+            <br />
+            <br />
+            <Link className="  mx-20  text-black" to={PathConstants.Clients}>Clients</Link>
+            <br />
+            <Link className="absolute  mx-20 mt-8 text-black" to={PathConstants.Contacts}>Contacts</Link>
+            <br />
+            <Link className="absolute  mx-20 mt-16 text-black" to={PathConstants.Inbox}>inbox</Link>
+            <br />
+            <Link className="absolute  mx-20 mt-24 text-black" to={PathConstants.TaskManagment}>TaskManagment</Link>
             </div>
+        </div>
+          
         </>
     )
 }
