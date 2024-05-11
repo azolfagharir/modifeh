@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import Form from './MyForm';
 const Inprogress = () => {
   const [showInput, setShowInput] = useState(false);
   const [description, setDescription] = useState('');  
@@ -38,7 +38,7 @@ const Inprogress = () => {
       </button>
 
       {/* Input form */}
-      {showInput && (
+      {showInput && (/*
         <form onSubmit={handleSubmit} className="absolute top-12 left-2">
           <input
             className="w-52 h-20 text-center"
@@ -56,7 +56,7 @@ const Inprogress = () => {
           />
           <button className="ml-52" type="submit">Create</button>
         </form>
-      )}
+      */ <Form />)}
 
       {/* Display submitted items */}
       {items.length > 0 && (
