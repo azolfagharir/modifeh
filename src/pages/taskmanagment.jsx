@@ -9,11 +9,11 @@ function TaskManagment(){
     const [showInputOfAddSection, setshowInputOfAddSection] = useState(false);
     const [inputOfAddSectionValue, setinputOfAddSectionValue] = useState('');
     
-   
+   let sectionQuantity = 1;
     const [titlesArray, setTitlesArray] = useState([
-        { title: "inprogress"},
-      { title: "to do"}, // Assuming you want to increment by 4 for each title
-      { title: "done"}, // Incrementing by 4 for each title
+        { title: "inprogress", index:sectionQuantity++},
+      { title: "to do", index:sectionQuantity++}, // Assuming you want to increment by 4 for each title
+      { title: "done", index:sectionQuantity++}, // Incrementing by 4 for each title
     ]);
     const handleToggle = () =>{
         setshowInputOfAddSection(prevState => !prevState);
@@ -28,9 +28,11 @@ function TaskManagment(){
     const handleSaveOfAddSectionSave =()=>{
         setTitlesArray(prevTitles => [
             ...prevTitles,
-            { title: inputOfAddSectionValue }
+            { title: inputOfAddSectionValue, index:sectionQuantity++ }
           ]);
         setshowInputOfAddSection(false);
+        setinputOfAddSectionValue('');
+
     }
     return(
         <>
@@ -42,17 +44,19 @@ function TaskManagment(){
                 </div>
                 <Link className="absolute top-28 left-80 text-black" to={PathConstants.HOME}><h1>Modifeh</h1></Link>
 
-                <div className="flex ml-48">
+                <div className="flex flex-wrap ml-48">
                 {titlesArray.map((titleObj, index) => (
-                    <Section key={index} className='p-2' title={titleObj.title} left_side={titleObj.left} />
+                    <div  key={index} className="w-1/4 flex-shrink-0">
+                        <Section key={index} className='p-2 flex-grow' title={titleObj.title} />
+                    </div>
                 ))}
             </div>
-            <div className="flex justify-end mt-0">
-                  <button onClick={handleToggle} className="text-xl">+</button>
+            <div className="flex justify-end mt-0 ">
+                  <button onClick={handleToggle} className="text-xl ">+</button>
               
             </div>
             {showInputOfAddSection && (
-        <div className="flex justify-end">
+        <div className = "flex justify-end ">
           <input
             type="text"
             value={inputOfAddSectionValue}

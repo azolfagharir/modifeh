@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CreateButton from './CreateButton';
 import Form from './MyForm';
 const mysection = ['inporgress', ' to do'];
 import TaskManagment from '/src/pages/TaskManagment.jsx';
@@ -31,7 +32,8 @@ const Section = (props) => {
   return (
     <>
       <div className=' z-4 left-96 p-32'>
-        <h1 className='text-lg'>{props.title}</h1>
+        <h1 className='text-lg '>{props.title}</h1>
+        <CreateButton />
       </div>
     </>
   ) 
