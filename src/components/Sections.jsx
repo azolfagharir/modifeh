@@ -1,22 +1,22 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from "react";
 // import CreateButton from './CreateButton';
-import Form from './MyForm';
-import TaskManagment from '/src/pages/TaskManagment.jsx';
-
+import Form from "./MyForm";
+import TaskManagment from "/src/pages/TaskManagment.jsx";
 const Section = (props) => {
   const modalRef = useRef(null);
-
+let sectionQuantity = 0;
   const handleToggleModal = () => {
     if (modalRef.current) {
-      modalRef.current.classList.toggle('hidden');
+      modalRef.current.classList.toggle("hidden");
       setShowCreateButton((prevState) => !prevState);
     }
   };
 
   const [showInput, setShowInput] = useState(false);
-  const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
-  const [items, setItems] = useState([]);
+  const [description, setDescription] = useState("");
+  const [helloTitle, sethelloTitle] = useState("");
+  const [items, setItems] = useState([
+  ]);
   const [showCreateButton, setShowCreateButton] = useState(false);
 
   const toggleInput = () => {
@@ -28,26 +28,33 @@ const Section = (props) => {
   };
 
   const handleChangeTitle = (event) => {
-    setTitle(event.target.value);
+    sethelloTitle(event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setItems((prevItems) => [...prevItems, { title, description }]);
-    setDescription('');
-    setTitle('');
+    setItems((prevTitles) => [
+      ...prevTitles,
+      { title: helloTitle, index: sectionQuantity++ },
+    ]);
+    setDescription("");
+    sethelloTitle("");
     setShowInput(false);
     handleToggleModal(); // Toggle the modal visibility after form submission
+    setShowCreateButton((prevState) => !prevState);
+
   };
 
-  const saveButton = () => {
+  const close = () => {
     setShowCreateButton((prevState) => !prevState);
   };
 
   return (
     <>
       <div className="z-4 left-96 p-32">
-        <h1 className="text-lg">{props.title}</h1>
+      <h1 className="text-lg">{props.title}</h1>
+      {items.map((myTitle, index) => (
+        <h3 key={index}>{myTitle.title}</h3> ))}
         <button
           onClick={handleToggleModal}
           className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -56,7 +63,12 @@ const Section = (props) => {
           Create Issue
         </button>
       </div>
-      <div ref={modalRef} className={`fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full ${showCreateButton ? '' : 'hidden'}`}>
+      <div
+        ref={modalRef}
+        className={`fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full ${
+          showCreateButton ? "" : "hidden"
+        }`}
+      >
         <div className="relative p-4 w-full max-w-md max-h-full">
           <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
@@ -87,14 +99,14 @@ const Section = (props) => {
                 <span className="sr-only">Close modal</span>
               </button>
             </div>
-            <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+            <form className="p-4 md:p-5" >
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
                     htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Name
+                    title
                   </label>
                   <input
                     type="text"
@@ -103,11 +115,11 @@ const Section = (props) => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type product name"
                     required
-                    value={title}
+                    value={helloTitle}
                     onChange={handleChangeTitle}
                   />
                 </div>
-                <div className="col-span-2 sm:col-span-1">
+                {/*<div className="col-span-2 sm:col-span-1">
                   <label
                     htmlFor="price"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -122,7 +134,7 @@ const Section = (props) => {
                     placeholder="$2999"
                     required
                   />
-                </div>
+      </div>*/}
                 <div className="col-span-2 sm:col-span-1">
                   <label
                     htmlFor="category"
@@ -131,22 +143,24 @@ const Section = (props) => {
                     Category
                   </label>
                   <div>
-                  <div>
-      <label htmlFor="options" className="block text-sm font-medium text-gray-700">
-        Choose an option:
-      </label>
-      <select
-        id="options"
-        name="options"
-        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
-      >
-     {props.tasks.map(task => (
-          <option key={task.index}>{task.title}</option>
-        ))}
-      </select>
-    </div>
-     
-    </div>
+                    <div>
+                      <label
+                        htmlFor="options"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Choose an option:
+                      </label>
+                      <select
+                        id="options"
+                        name="options"
+                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
+                      >
+                        {props.tasks.map((task) => (
+                          <option key={task.index}>{task.title}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                 </div>
                 <div className="col-span-2">
                   <label
@@ -155,7 +169,9 @@ const Section = (props) => {
                   >
                     Description
                   </label>
-                  <input
+                  <textarea
+                  
+                  rows="4" cols="50"
                     type="text"
                     name="description"
                     id="description"
@@ -169,16 +185,20 @@ const Section = (props) => {
               </div>
               <button
                 type="submit"
+                onClick={handleSubmit}
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Save
               </button>
-              <button onClick={saveButton}
-              type="button"
-              data-twe-ripple-init
-              data-twe-ripple-color="light"
-              className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-dark shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-         >Close</button>
+              <button
+                onClick={close}
+                type="button"
+                data-twe-ripple-init
+                data-twe-ripple-color="light"
+                className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-dark shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+              >
+                Close
+              </button>
             </form>
           </div>
         </div>
