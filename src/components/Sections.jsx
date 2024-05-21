@@ -130,13 +130,23 @@ const Section = (props) => {
                   >
                     Category
                   </label>
-                  <label
-                    htmlFor="years"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Select an option
-                  </label>
-                  <input list="options" name="option" />
+                  <div>
+                  <div>
+      <label htmlFor="options" className="block text-sm font-medium text-gray-700">
+        Choose an option:
+      </label>
+      <select
+        id="options"
+        name="options"
+        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
+      >
+     {props.tasks.map(task => (
+          <option key={task.index}>{task.title}</option>
+        ))}
+      </select>
+    </div>
+     
+    </div>
                 </div>
                 <div className="col-span-2">
                   <label
@@ -159,11 +169,16 @@ const Section = (props) => {
               </div>
               <button
                 type="submit"
-                onClick={saveButton}
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Save
               </button>
+              <button onClick={saveButton}
+              type="button"
+              data-twe-ripple-init
+              data-twe-ripple-color="light"
+              className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-dark shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+         >Close</button>
             </form>
           </div>
         </div>
