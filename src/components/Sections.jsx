@@ -1,10 +1,8 @@
 import React, { useState, useRef } from "react";
-// import CreateButton from './CreateButton';
-import Form from "./MyForm";
-import TaskManagment from "/src/pages/TaskManagment.jsx";
+
 const Section = (props) => {
   const modalRef = useRef(null);
-let sectionQuantity = 0;
+
   const handleToggleModal = () => {
     if (modalRef.current) {
       modalRef.current.classList.toggle("hidden");
@@ -12,43 +10,38 @@ let sectionQuantity = 0;
     }
   };
 
-  const [showInput, setShowInput] = useState(false);
-  const [hellodescription, sethelloDescription] = useState("");
-  const [helloTitle, sethelloTitle] = useState("");
-  const [items, setItems] = useState([
-  ]);
-  const [items2, setItems2] = useState([
-  ]);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    section: "To Do" // Default to the first section
+  });
+
+  const [sections, setSections] = useState({
+    "In Progress": [],
+    "To Do": [],
+    "Done": []
+  });
+
   const [showCreateButton, setShowCreateButton] = useState(false);
 
-  const toggleInput = () => {
-    setShowInput((prevState) => !prevState);
-  };
-
-  const handleChangeDescription = (event) => {
-    sethelloDescription(event.target.value);
-  };
-
-  const handleChangeTitle = (event) => {
-    sethelloTitle(event.target.value);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setItems((prevTitles) => [
-      ...prevTitles,
-      { title: helloTitle, index: sectionQuantity++ },
-    ]);
-    setItems2((prevDescription) => [
-      ...prevDescription,
-      { discription: hellodescription, index: sectionQuantity++ },
-    ]);
-    setDescription("");
-    sethelloTitle("");
-    setShowInput(false);
-    handleToggleModal(); // Toggle the modal visibility after form submission
+    const { title, description, section } = formData;
+    setSections((prevSections) => ({
+      ...prevSections,
+      [section]: [...prevSections[section], { title, description }]
+    }));
+    setFormData({ title: "", description: "", section: "To Do" });
+    handleToggleModal();
     setShowCreateButton((prevState) => !prevState);
-
   };
 
   const close = () => {
@@ -58,11 +51,20 @@ let sectionQuantity = 0;
   return (
     <>
       <div className="z-4 left-96 p-32">
-      <h1 className="text-lg">{props.title}</h1>
-      {items.map((myTitle, index) => (
-        <h3 key={index}>{myTitle.title}</h3> ))}
-      {items2.map((myDescription, index)=>(
-        <p key={index}>{myDescription.hellodescription}</p> ))}
+        {Object.keys(sections).map((sectionTitle) => (
+          <div key={sectionTitle} className="mb-6">
+            <h1 className="text-xl text-gray-700 font-bold">{sectionTitle}</h1>
+            <div className="bg-gradient-to-br from-blue-200 to-blue-300 shadow-lg rounded-lg p-6 w-full h-auto">
+              {sections[sectionTitle].map((item, index) => (
+                <div key={index} className="mb-4">
+                  <h3 className="text-4xl">{item.title}</h3>
+                  <p className="text-sm">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
         <button
           onClick={handleToggleModal}
           className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -81,7 +83,7 @@ let sectionQuantity = 0;
           <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Create New Product
+                Create New Item
               </h3>
               <button
                 onClick={handleToggleModal}
@@ -107,68 +109,44 @@ let sectionQuantity = 0;
                 <span className="sr-only">Close modal</span>
               </button>
             </div>
-            <form className="p-4 md:p-5" >
+            <form className="p-4 md:p-5" onSubmit={handleSubmit}>
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
-                    htmlFor="name"
+                    htmlFor="title"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    title
+                    Title
                   </label>
                   <input
                     type="text"
-                    name="name"
-                    id="name"
+                    name="title"
+                    id="title"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type product name"
+                    placeholder="Type item title"
                     required
-                    value={helloTitle}
-                    onChange={handleChangeTitle}
+                    value={formData.title}
+                    onChange={handleChange}
                   />
                 </div>
-                {/*<div className="col-span-2 sm:col-span-1">
+                <div className="col-span-2">
                   <label
-                    htmlFor="price"
+                    htmlFor="section"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Price
+                    Section
                   </label>
-                  <input
-                    type="number"
-                    name="price"
-                    id="price"
+                  <select
+                    name="section"
+                    id="section"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="$2999"
-                    required
-                  />
-      </div>*/}
-                <div className="col-span-2 sm:col-span-1">
-                  <label
-                    htmlFor="category"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    value={formData.section}
+                    onChange={handleChange}
                   >
-                    Category
-                  </label>
-                  <div>
-                    <div>
-                      <label
-                        htmlFor="options"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Choose an option:
-                      </label>
-                      <select
-                        id="options"
-                        name="options"
-                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
-                      >
-                        {props.tasks.map((task) => (
-                          <option key={task.index}>{task.title}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
+                    <option value="In Progress">In Progress</option>
+                    <option value="To Do">To Do</option>
+                    <option value="Done">Done</option>
+                  </select>
                 </div>
                 <div className="col-span-2">
                   <label
@@ -177,23 +155,20 @@ let sectionQuantity = 0;
                   >
                     Description
                   </label>
-                  <textarea
-                  
-                 /* rows="4" cols="50"*/
+                  <input
                     type="text"
                     name="description"
                     id="description"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type product description"
+                    placeholder="Type item description"
                     required
-                    value={hellodescription}
-                    onChange={handleChangeDescription}
+                    value={formData.description}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
               <button
                 type="submit"
-                onClick={handleSubmit}
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Save
@@ -201,8 +176,6 @@ let sectionQuantity = 0;
               <button
                 onClick={close}
                 type="button"
-                data-twe-ripple-init
-                data-twe-ripple-color="light"
                 className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-dark shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
               >
                 Close
