@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-// import CreateButton from './CreateButton';
 import Form from "./MyForm";
 import TaskManagment from "/src/pages/TaskManagment.jsx";
 const Section = (props) => {
@@ -15,8 +14,7 @@ let sectionQuantity = 0;
   const [showInput, setShowInput] = useState(false);
   const [hellodescription, sethelloDescription] = useState("");
   const [helloTitle, sethelloTitle] = useState("");
-  const [items, setItems] = useState([
-  ]);
+  const [items, setItems] = useState([]);
   const [items2, setItems2] = useState([
   ]);
   const [showCreateButton, setShowCreateButton] = useState(false);
@@ -43,12 +41,11 @@ let sectionQuantity = 0;
       ...prevDescription,
       { discription: hellodescription, index: sectionQuantity++ },
     ]);
-    setDescription("");
+    sethelloDescription("");
     sethelloTitle("");
     setShowInput(false);
     handleToggleModal(); // Toggle the modal visibility after form submission
     setShowCreateButton((prevState) => !prevState);
-
   };
 
   const close = () => {
@@ -57,12 +54,26 @@ let sectionQuantity = 0;
 
   return (
     <>
-      <div className="z-4 left-96 p-32">
-      <h1 className="text-lg">{props.title}</h1>
-      {items.map((myTitle, index) => (
-        <h3 key={index}>{myTitle.title}</h3> ))}
-      {items2.map((myDescription, index)=>(
-        <p key={index}>{myDescription.hellodescription}</p> ))}
+    <div>
+
+      </div>
+        <div className="z-4 left-96 p-32">
+          <h1 className="text-lg">{props.title}</h1>
+            {items.map((myTitle, index) => (
+          <div className="p-0 w-full text-6xl">
+              <div className="text-center" key={index}>
+                <h3 className="inline-block border rounded-lg shadow-lg bg-blue-400 text-white">{myTitle.title}</h3>
+        </div>
+        {items2.map((myDescription, index) => (
+              <div className="text-center" key={index}>
+            <p className="text-xl">{myDescription.discription}</p>
+        </div>
+            ))}
+    </div>
+
+))}
+
+     
         <button
           onClick={handleToggleModal}
           className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -127,22 +138,6 @@ let sectionQuantity = 0;
                     onChange={handleChangeTitle}
                   />
                 </div>
-                {/*<div className="col-span-2 sm:col-span-1">
-                  <label
-                    htmlFor="price"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Price
-                  </label>
-                  <input
-                    type="number"
-                    name="price"
-                    id="price"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="$2999"
-                    required
-                  />
-      </div>*/}
                 <div className="col-span-2 sm:col-span-1">
                   <label
                     htmlFor="category"
@@ -178,8 +173,6 @@ let sectionQuantity = 0;
                     Description
                   </label>
                   <textarea
-                  
-                 /* rows="4" cols="50"*/
                     type="text"
                     name="description"
                     id="description"
