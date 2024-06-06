@@ -44,7 +44,7 @@ let sectionQuantity = 0;
     sethelloDescription("");
     sethelloTitle("");
     setShowInput(false);
-    handleToggleModal(); // Toggle the modal visibility after form submission
+    handleToggleModal(); 
     setShowCreateButton((prevState) => !prevState);
   };
 
