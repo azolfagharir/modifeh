@@ -23,23 +23,19 @@ let sectionQuantity = 0;
     setShowInput((prevState) => !prevState);
   };
 
-  const handleChangeDescription = (event) => {
-    sethelloDescription(event.target.value);
+  const handleTitleAndDescription = (event) => {
+    const { name, value } = event.target;
+    if (name === 'description') {
+      sethelloDescription(value);
+    } else if (name === 'title') {
+      sethelloTitle(value);
   };
-
-  const handleChangeTitle = (event) => {
-    sethelloTitle(event.target.value);
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    setItems((prevTitles) => [
-      ...prevTitles,
-      { title: helloTitle, index: sectionQuantity++ },
-    ]);
-    setItems2((prevDescription) => [
-      ...prevDescription,
-      { discription: hellodescription, index: sectionQuantity++ },
+    setItems((prevItems) => [
+      ...prevItems,
+      { type: 'title', content: helloTitle, index: sectionQuantity++ },
+      { type: 'description', content: hellodescription, index: sectionQuantity++ },
     ]);
     sethelloDescription("");
     sethelloTitle("");
@@ -59,16 +55,14 @@ let sectionQuantity = 0;
       </div>
         <div className="z-4 left-96 p-32">
           <h1 className="text-lg">{props.title}</h1>
-            {items.map((myTitle, index) => (
+            {items.map((hello) => (
           <div className="p-0 w-full text-6xl">
-              <div className="text-center" key={index}>
-                <h3 className="inline-block border rounded-lg shadow-lg bg-blue-400 text-white">{myTitle.title}</h3>
+              <div className="text-center" key={props.title}>
+                <h3 className="inline-block border rounded-lg shadow-lg bg-blue-400 text-white">{hello.title}</h3>
         </div>
-        {items2.map((myDescription, index) => (
-              <div className="text-center" key={index}>
-            <p className="text-xl">{myDescription.discription}</p>
+              <div className="text-center" key={props.title}>
+            <p className="text-xl">{hello.discription}</p>
         </div>
-            ))}
     </div>
 
 ))}
@@ -129,13 +123,13 @@ let sectionQuantity = 0;
                   </label>
                   <input
                     type="text"
-                    name="name"
+                    name="title"
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type product name"
                     required
                     value={helloTitle}
-                    onChange={handleChangeTitle}
+                    onChange={handleTitleAndDescription}
                   />
                 </div>
                 <div className="col-span-2 sm:col-span-1">
@@ -180,7 +174,7 @@ let sectionQuantity = 0;
                     placeholder="Type product description"
                     required
                     value={hellodescription}
-                    onChange={handleChangeDescription}
+                    onChange={handleTitleAndDescription}
                   />
                 </div>
               </div>
@@ -207,5 +201,5 @@ let sectionQuantity = 0;
     </>
   );
 };
-
+}
 export default Section;
