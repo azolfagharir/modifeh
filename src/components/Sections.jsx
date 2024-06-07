@@ -3,7 +3,7 @@ import Form from "./MyForm";
 import TaskManagment from "/src/pages/TaskManagment.jsx";
 const Section = (props) => {
   const modalRef = useRef(null);
-
+let sectionQuantity = 0;
   const handleToggleModal = () => {
     if (modalRef.current) {
       modalRef.current.classList.toggle("hidden");
@@ -23,19 +23,23 @@ const Section = (props) => {
     setShowInput((prevState) => !prevState);
   };
 
-  const handleTitleAndDescription = (event) => {
-    const { name, value } = event.target;
-    if (name === 'description') {
-      sethelloDescription(value);
-    } else if (name === 'title') {
-      sethelloTitle(value);
+  const handleChangeDescription = (event) => {
+    sethelloDescription(event.target.value);
   };
+
+  const handleChangeTitle = (event) => {
+    sethelloTitle(event.target.value);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    setItems((prevItems) => [
-      ...prevItems,
-      { type: 'title', content: helloTitle, index: sectionQuantity++ },
-      { type: 'description', content: hellodescription, index: sectionQuantity++ },
+    setItems((prevTitles) => [
+      ...prevTitles,
+      { title: helloTitle, index: sectionQuantity++ },
+    ]);
+    setItems2((prevDescription) => [
+      ...prevDescription,
+      { discription: hellodescription, index: sectionQuantity++ },
     ]);
     sethelloDescription("");
     sethelloTitle("");
@@ -55,14 +59,16 @@ const Section = (props) => {
       </div>
         <div className="z-4 left-96 p-32">
           <h1 className="text-lg">{props.title}</h1>
-            {items.map((hello) => (
+            {items.map((myTitle, index) => (
           <div className="p-0 w-full text-6xl">
-              <div className="text-center" key={props.title}>
-                <h3 className="inline-block border rounded-lg shadow-lg bg-blue-400 text-white">{hello.title}</h3>
+              <div className="text-center" key={index}>
+                <h3 className="inline-block border rounded-lg shadow-lg bg-blue-400 text-white">{myTitle.title}</h3>
         </div>
-              <div className="text-center" key={props.title}>
-            <p className="text-xl">{hello.discription}</p>
+        {items2.map((myDescription, index) => (
+              <div className="text-center" key={index}>
+            <p className="text-xl">{myDescription.discription}</p>
         </div>
+            ))}
     </div>
 
 ))}
@@ -86,7 +92,7 @@ const Section = (props) => {
           <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Create New Item
+                Create New Product
               </h3>
               <button
                 onClick={handleToggleModal}
@@ -112,24 +118,24 @@ const Section = (props) => {
                 <span className="sr-only">Close modal</span>
               </button>
             </div>
-            <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+            <form className="p-4 md:p-5" >
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
-                    htmlFor="title"
+                    htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Title
+                    title
                   </label>
                   <input
                     type="text"
-                    name="title"
+                    name="name"
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type item title"
+                    placeholder="Type product name"
                     required
                     value={helloTitle}
-                    onChange={handleTitleAndDescription}
+                    onChange={handleChangeTitle}
                   />
                 </div>
                 <div className="col-span-2 sm:col-span-1">
@@ -137,10 +143,27 @@ const Section = (props) => {
                     htmlFor="category"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    <option value="In Progress">In Progress</option>
-                    <option value="To Do">To Do</option>
-                    <option value="Done">Done</option>
-                  </select>
+                    Category
+                  </label>
+                  <div>
+                    <div>
+                      <label
+                        htmlFor="options"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Choose an option:
+                      </label>
+                      <select
+                        id="options"
+                        name="options"
+                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
+                      >
+                        {props.tasks.map((task) => (
+                          <option key={task.index}>{task.title}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                 </div>
                 <div className="col-span-2">
                   <label
@@ -154,15 +177,16 @@ const Section = (props) => {
                     name="description"
                     id="description"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type item description"
+                    placeholder="Type product description"
                     required
                     value={hellodescription}
-                    onChange={handleTitleAndDescription}
+                    onChange={handleChangeDescription}
                   />
                 </div>
               </div>
               <button
                 type="submit"
+                onClick={handleSubmit}
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Save
@@ -170,6 +194,8 @@ const Section = (props) => {
               <button
                 onClick={close}
                 type="button"
+                data-twe-ripple-init
+                data-twe-ripple-color="light"
                 className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-dark shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
               >
                 Close
@@ -182,6 +208,4 @@ const Section = (props) => {
   );
 };
 
-
 export default Section;
-}
