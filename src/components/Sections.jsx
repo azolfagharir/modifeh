@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
-
+import Form from "./MyForm";
+import TaskManagment from "/src/pages/TaskManagment.jsx";
 const Section = (props) => {
   const modalRef = useRef(null);
 
@@ -10,37 +11,36 @@ const Section = (props) => {
     }
   };
 
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    section: "To Do" // Default to the first section
-  });
-
-  const [sections, setSections] = useState({
-    "In Progress": [],
-    "To Do": [],
-    "Done": []
-  });
-
+  const [showInput, setShowInput] = useState(false);
+  const [hellodescription, sethelloDescription] = useState("");
+  const [helloTitle, sethelloTitle] = useState("");
+  const [items, setItems] = useState([]);
+  const [items2, setItems2] = useState([
+  ]);
   const [showCreateButton, setShowCreateButton] = useState(false);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
+  const toggleInput = () => {
+    setShowInput((prevState) => !prevState);
   };
 
+  const handleTitleAndDescription = (event) => {
+    const { name, value } = event.target;
+    if (name === 'description') {
+      sethelloDescription(value);
+    } else if (name === 'title') {
+      sethelloTitle(value);
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { title, description, section } = formData;
-    setSections((prevSections) => ({
-      ...prevSections,
-      [section]: [...prevSections[section], { title, description }]
-    }));
-    setFormData({ title: "", description: "", section: "To Do" });
-    handleToggleModal();
+    setItems((prevItems) => [
+      ...prevItems,
+      { type: 'title', content: helloTitle, index: sectionQuantity++ },
+      { type: 'description', content: hellodescription, index: sectionQuantity++ },
+    ]);
+    sethelloDescription("");
+    sethelloTitle("");
+    setShowInput(false);
+    handleToggleModal(); 
     setShowCreateButton((prevState) => !prevState);
   };
 
@@ -50,21 +50,24 @@ const Section = (props) => {
 
   return (
     <>
-      <div className="z-4 left-96 p-32">
-        {Object.keys(sections).map((sectionTitle) => (
-          <div key={sectionTitle} className="mb-6">
-            <h1 className="text-xl text-gray-700 font-bold">{sectionTitle}</h1>
-            <div className="bg-gradient-to-br from-blue-200 to-blue-300 shadow-lg rounded-lg p-6 w-full h-auto">
-              {sections[sectionTitle].map((item, index) => (
-                <div key={index} className="mb-4">
-                  <h3 className="text-4xl">{item.title}</h3>
-                  <p className="text-sm">{item.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+    <div>
 
+      </div>
+        <div className="z-4 left-96 p-32">
+          <h1 className="text-lg">{props.title}</h1>
+            {items.map((hello) => (
+          <div className="p-0 w-full text-6xl">
+              <div className="text-center" key={props.title}>
+                <h3 className="inline-block border rounded-lg shadow-lg bg-blue-400 text-white">{hello.title}</h3>
+        </div>
+              <div className="text-center" key={props.title}>
+            <p className="text-xl">{hello.discription}</p>
+        </div>
+    </div>
+
+))}
+
+     
         <button
           onClick={handleToggleModal}
           className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -121,27 +124,18 @@ const Section = (props) => {
                   <input
                     type="text"
                     name="title"
-                    id="title"
+                    id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type item title"
                     required
-                    value={formData.title}
-                    onChange={handleChange}
+                    value={helloTitle}
+                    onChange={handleTitleAndDescription}
                   />
                 </div>
-                <div className="col-span-2">
+                <div className="col-span-2 sm:col-span-1">
                   <label
-                    htmlFor="section"
+                    htmlFor="category"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Section
-                  </label>
-                  <select
-                    name="section"
-                    id="section"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={formData.section}
-                    onChange={handleChange}
                   >
                     <option value="In Progress">In Progress</option>
                     <option value="To Do">To Do</option>
@@ -155,15 +149,15 @@ const Section = (props) => {
                   >
                     Description
                   </label>
-                  <input
+                  <textarea
                     type="text"
                     name="description"
                     id="description"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type item description"
                     required
-                    value={formData.description}
-                    onChange={handleChange}
+                    value={hellodescription}
+                    onChange={handleTitleAndDescription}
                   />
                 </div>
               </div>
@@ -188,4 +182,6 @@ const Section = (props) => {
   );
 };
 
+
 export default Section;
+}
